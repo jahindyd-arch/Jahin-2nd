@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A futuristic luxury personal portfolio.">
+<title>JEXY // Digital Portfolio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#030506;
+  --panel:rgba(9,15,17,.72);
+  --line:rgba(88,255,210,.14);
+  --text:#eefefa;
+  --muted:#7d9693;
+  --blue:#18a8ff;
+  --green:#35ffc0;
+  --cyan:#7ffff0;
+  --max:1240px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);font-family:Inter,sans-serif;
+  overflow-x:hidden;cursor:none;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+body:after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:49;
+  background:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:100% 4px;mix-blend-mode:overlay;opacity:.18;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+ .cursor,.cursor-ring,.cursor-glow{position:fixed;pointer-events:none;z-index:1000;transform:translate(-50%,-50%)}
+.cursor-glow{
+  width:170px;height:170px;border-radius:50%;
+  background:radial-gradient(circle,rgba(53,255,192,.13) 0%,rgba(24,168,255,.07) 25%,rgba(24,168,255,.025) 48%,transparent 72%);
+  filter:blur(10px);opacity:.75;mix-blend-mode:screen;
+}
+.cursor{
+  width:6px;height:6px;border-radius:50%;background:#dffff7;
+  box-shadow:0 0 8px #fff,0 0 18px var(--green),0 0 34px var(--green);
+  transition:transform .12s ease;
+}
+.cursor-ring{
+  width:42px;height:42px;border:1px solid rgba(127,255,240,.5);
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(53,255,192,.10) 0%,rgba(24,168,255,.035) 42%,transparent 72%);
+  box-shadow:
+    0 0 18px rgba(53,255,192,.18),
+    0 0 42px rgba(53,255,192,.10),
+    inset 0 0 18px rgba(53,255,192,.08);
+  transition:width .28s var(--ease),height .28s var(--ease),border-color .28s,
+             box-shadow .28s,background .28s;
+}
+.cursor-ring:before{
+  content:"";position:absolute;inset:-12px;border-radius:50%;
+  background:radial-gradient(circle,rgba(53,255,192,.16),rgba(53,255,192,.05) 35%,transparent 70%);
+  filter:blur(7px);opacity:.75;
+}
+.cursor-ring:after{
+  content:"";position:absolute;inset:-3px;border-radius:50%;
+  border:1px solid rgba(24,168,255,.18);
+  animation:cursorSpin 4s linear infinite;
+}
+.cursor-ring.big{
+  width:76px;height:76px;
+  border-color:rgba(53,255,192,.75);
+  background:radial-gradient(circle,rgba(53,255,192,.16),rgba(24,168,255,.055) 45%,transparent 72%);
+  box-shadow:
+    0 0 22px rgba(53,255,192,.28),
+    0 0 60px rgba(24,168,255,.18),
+    0 0 100px rgba(53,255,192,.10),
+    inset 0 0 24px rgba(53,255,192,.12);
+}
+@keyframes cursorSpin{to{transform:rotate(360deg)}}
+
+.noise-orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;opacity:.2;z-index:-1}
+.orb1{width:420px;height:420px;background:var(--blue);top:-160px;right:-100px}
+.orb2{width:360px;height:360px;background:var(--green);left:-180px;top:45%;opacity:.12}
+.grid{
+  position:fixed;inset:0;z-index:-2;opacity:.17;
+  background-image:linear-gradient(rgba(55,255,205,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(55,255,205,.07) 1px,transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(circle at center,black 0%,transparent 75%);
+}
+.container{width:min(var(--max),calc(100% - 48px));margin:auto}
+
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:22px 0;border-bottom:1px solid transparent;
+  transition:.4s var(--ease);
+}
+header.scrolled{background:rgba(3,5,6,.72);backdrop-filter:blur(20px);border-color:var(--line);padding:14px 0}
+.nav{display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:"Space Grotesk";font-weight:700;letter-spacing:.18em;font-size:15px}
+.logo span{color:var(--green)}
+.navlinks{display:flex;gap:30px;color:#9fb3b0;font-size:12px;text-transform:uppercase;letter-spacing:.15em}
+.navlinks a{position:relative;transition:.25s}
+.navlinks a:hover{color:var(--text)}
+.navlinks a:after{content:"";position:absolute;left:0;bottom:-7px;width:0;height:1px;background:var(--green);transition:.3s}
+.navlinks a:hover:after{width:100%}
+.status{display:flex;align-items:center;gap:8px;font-size:10px;color:#89a09d;letter-spacing:.12em;text-transform:uppercase}
+.status i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);animation:pulse 1.8s infinite}
+@keyframes pulse{50%{opacity:.3;transform:scale(.7)}}
+
+.hero{min-height:100vh;display:grid;place-items:center;position:relative;padding-top:80px}
+.hero-inner{position:relative}
+.eyebrow{display:flex;align-items:center;gap:12px;color:var(--green);font-size:10px;letter-spacing:.25em;text-transform:uppercase;margin-bottom:28px}
+.eyebrow:before{content:"";width:35px;height:1px;background:var(--green);box-shadow:0 0 12px var(--green)}
+h1{
+  font-family:"Space Grotesk";font-size:clamp(58px,10vw,148px);line-height:.82;
+  letter-spacing:-.07em;max-width:1000px;font-weight:600;
+}
+h1 .ghost{color:transparent;-webkit-text-stroke:1px rgba(238,254,250,.4)}
+h1 .accent{color:var(--green);text-shadow:0 0 50px rgba(53,255,192,.18)}
+.hero-main{display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.hero-portrait{flex:0 0 min(320px,38vw);display:flex;justify-content:center;align-items:center;position:relative}
+.hero-portrait:before{content:"";position:absolute;inset:-18px;border:1px solid rgba(53,255,192,.3);border-radius:28px;transform:rotate(-4deg);box-shadow:0 0 40px rgba(24,168,255,.18), inset 0 0 35px rgba(53,255,192,.08)}
+.hero-portrait:after{content:"";position:absolute;inset:10px;border:1px solid rgba(24,168,255,.2);border-radius:22px;transform:rotate(6deg);filter:blur(.5px)}
+.portrait-frame{position:relative;padding:12px;border:1px solid rgba(127,255,240,.25);border-radius:24px;background:linear-gradient(135deg,rgba(17,27,31,.95),rgba(4,12,14,.7));box-shadow:0 0 45px rgba(24,168,255,.16), inset 0 0 20px rgba(53,255,192,.12);overflow:hidden}
+.portrait-frame img{display:block;width:min(320px,38vw);aspect-ratio:4/5;object-fit:cover;border-radius:18px;filter:saturate(1.05) contrast(1.07)}
+.hero-copy{display:flex;justify-content:space-between;align-items:end;margin-top:45px;gap:40px}
+.hero-copy p{color:var(--muted);max-width:430px;font-size:14px;line-height:1.9}
+.hero-actions{display:flex;gap:12px}
+.btn{
+  padding:14px 19px;border:1px solid var(--line);background:rgba(255,255,255,.025);
+  text-transform:uppercase;letter-spacing:.15em;font-size:10px;transition:.35s var(--ease);
+}
+.btn.primary{background:var(--green);color:#02100c;border-color:var(--green);font-weight:700}
+.btn:hover{transform:translateY(-4px);box-shadow:0 15px 35px rgba(53,255,192,.12)}
+.hero-meta{position:absolute;right:0;top:53%;font-size:9px;letter-spacing:.15em;color:#54706c;writing-mode:vertical-rl}
+.scroll{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:.2em;color:#5e7471;text-transform:uppercase}
+.scroll:after{content:"";display:block;width:1px;height:45px;background:linear-gradient(var(--green),transparent);margin:10px auto 0}
+
+section{padding:140px 0}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:55px}
+.kicker{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.section-title{font-family:"Space Grotesk";font-size:clamp(38px,6vw,76px);letter-spacing:-.055em}
+.section-number{font-size:10px;color:#526864;letter-spacing:.2em}
+
+.work-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.card{
+  position:relative;min-height:450px;border:1px solid var(--line);overflow:hidden;
+  background:linear-gradient(145deg,rgba(18,29,30,.72),rgba(4,8,9,.92));
+  transition:.6s var(--ease);isolation:isolate;
+}
+.card:nth-child(1){grid-column:span 7}
+.card:nth-child(2){grid-column:span 5;margin-top:90px}
+.card:nth-child(3){grid-column:span 5}
+.card:nth-child(4){grid-column:span 7;margin-top:-70px}
+.card:hover{transform:translateY(-10px);border-color:rgba(53,255,192,.4);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.card:before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(53,255,192,.14),transparent 28%);
+}
+.card-art{position:absolute;inset:0;overflow:hidden}
+.art-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(53,255,192,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(53,255,192,.06) 1px,transparent 1px);background-size:45px 45px;transform:perspective(600px) rotateX(55deg) scale(1.7);transform-origin:center bottom;opacity:.6}
+.orbit{position:absolute;border:1px solid rgba(53,255,192,.22);border-radius:50%;width:330px;height:330px;left:50%;top:45%;transform:translate(-50%,-50%) rotateX(62deg);box-shadow:0 0 80px rgba(24,168,255,.06)}
+.orbit:before,.orbit:after{content:"";position:absolute;border:1px solid rgba(24,168,255,.22);border-radius:50%;inset:35px}
+.orbit:after{inset:80px}
+.core{position:absolute;width:70px;height:70px;border-radius:50%;left:50%;top:45%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,white 0 2%,var(--green) 4%,#087c62 25%,#02110e 70%);box-shadow:0 0 35px var(--green),0 0 100px rgba(24,168,255,.5)}
+.card:nth-child(2) .orbit{border-color:rgba(24,168,255,.3);transform:translate(-50%,-50%) rotateY(65deg)}
+.card:nth-child(2) .core{background:radial-gradient(circle at 35% 30%,white 0 2%,var(--blue) 4%,#075b85 25%,#02101a 70%);box-shadow:0 0 35px var(--blue),0 0 100px rgba(53,255,192,.3)}
+.card:nth-child(3) .art-grid{transform:rotate(45deg) scale(1.8)}
+.card:nth-child(3) .orbit{width:260px;height:260px;transform:translate(-50%,-50%)}
+.card:nth-child(4) .orbit{width:500px;height:180px;transform:translate(-50%,-50%) rotate(-18deg)}
+.card-info{position:absolute;left:25px;right:25px;bottom:22px;display:flex;justify-content:space-between;align-items:end}
+.card-info h3{font-family:"Space Grotesk";font-size:25px}
+.card-info p{font-size:10px;color:#76908b;letter-spacing:.08em;margin-top:6px}
+.tag{font-size:9px;color:var(--green);border:1px solid var(--line);padding:7px 9px;letter-spacing:.12em;text-transform:uppercase}
+
+.about{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px}
+.big-copy{font-family:"Space Grotesk";font-size:clamp(28px,4vw,55px);line-height:1.12;letter-spacing:-.04em}
+.big-copy span{color:var(--green)}
+.about-text{color:var(--muted);line-height:1.9;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);margin-top:55px}
+.stat{background:var(--bg);padding:28px 20px}
+.stat strong{font-family:"Space Grotesk";font-size:36px}
+.stat small{display:block;color:#637a76;font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin-top:7px}
+
+.skills{display:flex;flex-wrap:wrap;gap:10px;margin-top:35px}
+.skill{padding:11px 14px;border:1px solid var(--line);font-size:10px;color:#9bb3ae;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.018)}
+
+.contact{min-height:80vh;display:grid;place-items:center;text-align:center;position:relative}
+.contact .section-title{font-size:clamp(55px,9vw,130px);max-width:1000px;margin:auto}
+.contact p{color:var(--muted);max-width:500px;margin:25px auto 35px;line-height:1.8}
+.email{font-family:"Space Grotesk";font-size:clamp(18px,3vw,35px);color:var(--green);border-bottom:1px solid rgba(53,255,192,.3);padding-bottom:8px}
+footer{padding:25px 0;border-top:1px solid var(--line);font-size:9px;color:#536965;letter-spacing:.12em;text-transform:uppercase;display:flex;justify-content:space-between}
+
+.reveal{opacity:0;transform:translateY(35px);transition:1s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+[data-tilt]{transform-style:preserve-3d}
+
+
+.theme-toggle{
+  position:relative;width:52px;height:28px;border:1px solid var(--line);
+  border-radius:999px;background:rgba(255,255,255,.035);cursor:none;
+  padding:0;transition:.35s var(--ease);overflow:hidden;
+}
+.theme-toggle:before{
+  content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;
+  border-radius:50%;background:var(--green);
+  box-shadow:0 0 14px rgba(53,255,192,.55);
+  transition:.35s var(--ease);
+}
+.theme-toggle:after{
+  content:"☾";position:absolute;right:7px;top:5px;font-size:12px;color:#9fb3b0;
+  line-height:18px;transition:.3s;
+}
+body.light{
+  --bg:#eef7f5;--panel:rgba(245,252,250,.78);--line:rgba(0,83,76,.16);
+  --text:#071311;--muted:#526864;--blue:#087fd0;--green:#00a982;--cyan:#007d75;
+}
+body.light .theme-toggle:before{transform:translateX(23px)}
+body.light .theme-toggle:after{content:"☀";left:7px;right:auto;color:#35605a}
+body.light .grid{
+  opacity:.28;
+  background-image:linear-gradient(rgba(0,126,115,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(0,126,115,.08) 1px,transparent 1px);
+}
+body.light:before{opacity:.025} body.light:after{opacity:.08}
+body.light .noise-orb{opacity:.11}
+body.light .card{
+  background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(218,237,232,.78));
+  box-shadow:0 20px 60px rgba(4,43,38,.08);
+}
+body.light .card:hover{box-shadow:0 30px 80px rgba(4,43,38,.15)}
+body.light .ghost{-webkit-text-stroke-color:rgba(7,19,17,.35)}
+body.light header.scrolled{background:rgba(238,247,245,.78)}
+body.light .btn{background:rgba(0,70,62,.035)}
+body.light .stat{background:var(--bg)}
+body.light .skill{background:rgba(0,80,70,.025)}
+
+.contact{min-height:auto;display:block;text-align:left;position:relative}
+.contact-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:18px;align-items:start}
+.contact-form-wrap,.availability-box,.contact-details,.location-card,.review-card{
+  border:1px solid var(--line);background:linear-gradient(145deg,rgba(18,29,30,.62),rgba(4,8,9,.78));
+}
+.contact-form-wrap{padding:28px}
+.terminal-label{font-size:9px;letter-spacing:.2em;color:#708984;margin-bottom:25px}
+.terminal-label span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);margin-right:8px}
+.contact-form{display:grid;gap:18px}
+.contact-form label{font-size:9px;letter-spacing:.16em;color:#728b87}
+.contact-form input,.contact-form select,.contact-form textarea{
+  width:100%;margin-top:8px;border:1px solid var(--line);background:rgba(0,0,0,.18);
+  color:var(--text);padding:14px;font:inherit;font-size:12px;outline:none;
+  transition:.25s;border-radius:0;resize:vertical;
+}
+.contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus{
+  border-color:rgba(53,255,192,.55);box-shadow:0 0 25px rgba(53,255,192,.07)
+}
+.contact-form select option{background:#07100f;color:#fff}
+.submit-btn{border:0;cursor:none;margin-top:4px}
+.form-status{font-size:10px;color:var(--green);min-height:15px}
+.contact-info{display:grid;gap:18px}
+.availability-box{padding:25px}
+.availability-main{font-family:"Space Grotesk";font-size:36px;color:var(--green);letter-spacing:-.04em}
+.availability-box p{color:var(--muted);font-size:12px;line-height:1.7;margin-top:8px}
+.contact-details{display:grid}
+.contact-details a{padding:18px 20px;border-bottom:1px solid var(--line);transition:.3s}
+.contact-details a:last-child{border-bottom:0}
+.contact-details a:hover{background:rgba(53,255,192,.045);padding-left:26px}
+.contact-details small{display:block;font-size:8px;letter-spacing:.18em;color:#607873;margin-bottom:5px}
+.contact-details strong{font-family:"Space Grotesk";font-size:15px}
+.location-card{padding:15px}
+.location-card .terminal-label{padding:10px 10px 5px;margin-bottom:10px}
+.map-frame{position:relative;height:250px;overflow:hidden;border:1px solid var(--line);filter:saturate(.65) contrast(1.1)}
+.map-frame iframe{width:100%;height:100%;border:0;filter:grayscale(.8) hue-rotate(100deg) invert(.88) contrast(1.2)}
+.map-overlay{position:absolute;right:10px;top:10px;padding:8px 10px;background:rgba(2,8,7,.82);border:1px solid rgba(53,255,192,.25);font-size:8px;letter-spacing:.14em;color:var(--green)}
+.location-meta{display:flex;justify-content:space-between;padding:14px 5px 3px;font-size:9px;letter-spacing:.1em}
+.location-meta span{color:#607873}
+.reviews{padding:110px 0 150px}
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.review-card{padding:28px;min-height:300px;display:flex;flex-direction:column;justify-content:space-between}
+.quote-mark{font-family:Georgia,serif;font-size:58px;color:var(--green);line-height:.5}
+.review-card p{font-family:"Space Grotesk";font-size:20px;line-height:1.4;letter-spacing:-.02em}
+.review-person{display:flex;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:18px}
+.review-person>span{font-size:9px;color:var(--green)}
+.review-person strong,.review-person small{display:block;font-size:9px;letter-spacing:.12em}
+.review-person small{color:#5d746f;margin-top:4px}
+.review-note{text-align:center;color:#4d6561;font-size:9px;letter-spacing:.08em;margin-top:22px}
+body.light .contact-form-wrap,body.light .availability-box,body.light .contact-details,body.light .location-card,body.light .review-card{
+  background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(220,239,234,.76));
+}
+body.light .contact-form input,body.light .contact-form select,body.light .contact-form textarea{background:rgba(255,255,255,.5)}
+body.light .contact-form select option{background:#fff;color:#071311}
+
+@media(max-width:800px){.theme-toggle{cursor:pointer}}
+
+@media(max-width:800px){
+  body{cursor:auto}.cursor,.cursor-ring{display:none}
+  .container{width:min(var(--max),calc(100% - 30px))}
+  .navlinks{display:none}
+  .status{display:none}
+  .hero{min-height:90vh}
+  .hero-main{display:block}
+  .hero-portrait{margin-top:30px;justify-content:flex-start;flex-basis:auto}
+  .hero-portrait:before{inset:-12px}
+  .portrait-frame img{width:min(280px,78vw)}
+  .hero-copy{display:block}.hero-actions{margin-top:25px}
+  .hero-meta{display:none}
+  section{padding:90px 0}
+  .section-head{margin-bottom:35px}
+  .work-grid{display:block}
+  .card,.card:nth-child(2),.card:nth-child(4){margin:0 0 15px;min-height:380px}
+  .about-grid{grid-template-columns:1fr;gap:45px}
+  .stats{grid-template-columns:1fr}
+  footer{gap:15px;flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="cursor"></div><div class="cursor-ring"></div><div class="cursor-glow"></div>
+<div class="grid"></div><div class="noise-orb orb1"></div><div class="noise-orb orb2"></div>
+
+<header id="header">
+  <div class="container nav">
+    <a class="logo" href="#">JEXY<span>.</span></a>
+    <nav class="navlinks">
+      <a href="#work">work</a><a href="#about">about</a><a href="#contact">contact</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:18px">
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch between dark and light mode"></button>
+      <div class="status"><i></i> available for selected projects</div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="eyebrow reveal">digital creative / 2026</div>
+    <div class="hero-main reveal">
+      <h1>BUILDING<br><span class="ghost">DIGITAL</span><br><span class="accent">FUTURES.</span></h1>
+      <div class="hero-portrait">
+        <div class="portrait-frame">
+          <img src="portrait.jpg" alt="Your portrait">
+        </div>
+      </div>
+    </div>
+    <div class="hero-copy reveal">
+      <p>I design and build digital experiences where technology meets visual culture. Clean engineering, cinematic interfaces, and a little controlled chaos.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#work">explore work</a>
+        <a class="btn" href="#contact">contact me</a>
+      </div>
+    </div>
+    <div class="hero-meta">scroll / discover / create</div>
+  </div>
+  <div class="scroll">scroll to explore</div>
+</section>
+
+<section id="work">
+  <div class="container">
+    <div class="section-head reveal">
+      <div><div class="kicker">selected work</div><h2 class="section-title">THE ARCHIVE</h2></div>
+      <div class="section-number">01 — 04</div>
+    </div>
+    <div class="work-grid">
+      <article class="card reveal" data-tilt>
+        <div class="card-art"><div class="art-grid"></div><div class="orbit"></div><div class="core"></div></div>
+        <div class="card-info"><div><h3>NEON / 01</h3><p>immersive web experience</p></div><span class="tag">01</span></div>
+      </article>
+      <article class="card reveal" data-tilt>
+        <div class="card-art"><div class="art-grid"></div><div class="orbit"></div><div class="core"></div></div>
+        <div class="card-info"><div><h3>VECTOR</h3><p>creative technology</p></div><span class="tag">02</span></div>
+      </article>
+      <article class="card reveal" data-tilt>
+        <div class="card-art"><div class="art-grid"></div><div class="orbit"></div><div class="core"></div></div>
+        <div class="card-info"><div><h3>VOID / 03</h3><p>art direction + interface</p></div><span class="tag">03</span></div>
+      </article>
+      <article class="card reveal" data-tilt>
+        <div class="card-art"><div class="art-grid"></div><div class="orbit"></div><div class="core"></div></div>
+        <div class="card-info"><div><h3>FLUX</h3><p>digital identity system</p></div><span class="tag">04</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <div class="container">
+    <div class="section-head reveal">
+      <div><div class="kicker">profile</div><h2 class="section-title">BEYOND CODE.</h2></div>
+      <div class="section-number">02 / 04</div>
+    </div>
+    <div class="about-grid">
+      <div class="big-copy reveal">I turn <span>ideas</span> into interfaces that feel like they came from five years in the future.</div>
+      <div class="about-text reveal">
+        <p>My approach sits somewhere between front-end engineering, visual design, motion, and storytelling. I care about the details people notice without knowing why they noticed them.</p>
+        <div class="skills">
+          <span class="skill">HTML / CSS</span><span class="skill">JavaScript</span><span class="skill">UI / UX</span><span class="skill">Motion</span><span class="skill">Creative Direction</span><span class="skill">Video</span>
+        </div>
+      </div>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><strong data-count="12">0</strong><small>projects shipped</small></div>
+      <div class="stat"><strong data-count="04">0</strong><small>creative disciplines</small></div>
+      <div class="stat"><strong data-count="100">0</strong><small>percent obsessed</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="container">
+    <div class="section-head reveal">
+      <div><div class="kicker">establish connection</div><h2 class="section-title">LET'S TALK.</h2></div>
+      <div class="section-number">03 / 04</div>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-form-wrap reveal">
+        <div class="terminal-label"><span></span> TRANSMISSION TERMINAL</div>
+        <form id="contactForm" class="contact-form">
+          <label>YOUR NAME<input type="text" name="name" placeholder="enter your name" required></label>
+          <label>YOUR EMAIL<input type="email" name="email" placeholder="you@example.com" required></label>
+          <label>PROJECT TYPE
+            <select name="project">
+              <option>Web Design</option><option>Front-end Development</option>
+              <option>UI / UX</option><option>Creative Technology</option><option>Other</option>
+            </select>
+          </label>
+          <label>YOUR MESSAGE<textarea name="message" rows="6" placeholder="tell me what you're building..." required></textarea></label>
+          <button class="btn primary submit-btn" type="submit">TRANSMIT MESSAGE →</button>
+          <div id="formStatus" class="form-status"></div>
+        </form>
+      </div>
+
+      <div class="contact-info reveal">
+        <div class="availability-box">
+          <div class="terminal-label"><span></span> SYSTEM STATUS</div>
+          <div class="availability-main">AVAILABLE</div>
+          <p>Currently open to selected creative, web and digital projects.</p>
+        </div>
+
+        <div class="contact-details">
+          <a href="mailto:jahindyd@gmail.com"><small>EMAIL</small><strong>jahindyd@gmail.com</strong></a>
+          <a href="https://github.com/jahindyd-arch" target="_blank" rel="noopener"><small>GITHUB</small><strong>jahindyd-arch ↗</strong></a>
+          <a href="https://www.linkedin.com/in/jahin-morshed/" target="_blank" rel="noopener"><small>LINKEDIN</small><strong>Jahin Morshed ↗</strong></a>
+          <a href="https://instagram.com/jahindyd.dev" target="_blank" rel="noopener"><small>INSTAGRAM</small><strong>@jahindyd.dev ↗</strong></a>
+          <a href="https://youtube.com/@LearnWithJahinDYD" target="_blank" rel="noopener"><small>YOUTUBE</small><strong>LearnWithJahinDYD ↗</strong></a>
+        </div>
+
+        <div class="location-card">
+          <div class="terminal-label"><span></span> LOCATION</div>
+          <div class="map-frame">
+            <iframe
+              src="https://www.google.com/maps?q=22.3344344,91.8120767&z=15&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Jahin's location in Bangladesh"></iframe>
+            <div class="map-overlay">BD / UTC+06:00</div>
+          </div>
+          <div class="location-meta">
+            <strong>BANGLADESH</strong>
+            <span>22.3344° N / 91.8121° E</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reviews">
+  <div class="container">
+    <div class="section-head reveal">
+      <div><div class="kicker">signal received</div><h2 class="section-title">REVIEWS.</h2></div>
+      <div class="section-number">04 / 04</div>
+    </div>
+
+    <div class="review-grid">
+      <article class="review-card reveal">
+        <div class="quote-mark">“</div>
+        <p>Jahin understood the visual direction immediately and turned a rough idea into something that felt genuinely polished.</p>
+        <div class="review-person"><span>01</span><div><strong>PROJECT CLIENT</strong><small>CREATIVE PROJECT</small></div></div>
+      </article>
+      <article class="review-card reveal">
+        <div class="quote-mark">“</div>
+        <p>The interface felt modern without becoming unusable. The little interactions were what made the whole experience memorable.</p>
+        <div class="review-person"><span>02</span><div><strong>COLLABORATOR</strong><small>DIGITAL PRODUCT</small></div></div>
+      </article>
+      <article class="review-card reveal">
+        <div class="quote-mark">“</div>
+        <p>Fast communication, strong attention to detail, and a clear obsession with making the final result better than the brief.</p>
+        <div class="review-person"><span>03</span><div><strong>PROJECT PARTNER</strong><small>WEB / MEDIA</small></div></div>
+      </article>
+    </div>
+    <p class="review-note reveal">Replace these placeholders with verified client testimonials before publishing.</p>
+  </div>
+</section>
+</main>
+
+<footer class="container">
+  <span>© 2026 JEXY DIGITAL</span><span>BUILT WITH INTENTION</span><span>01:01 — 100% ONLINE</span>
+</footer>
+
+<script>
+const cursor=document.querySelector('.cursor');
+const ring=document.querySelector('.cursor-ring');
+const glow=document.querySelector('.cursor-glow');
+let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my,gx=mx,gy=my;
+addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+});
+addEventListener('mousedown',()=>ring.classList.add('big'));
+addEventListener('mouseup',()=>ring.classList.remove('big'));
+function cursorLoop(){
+  rx+=(mx-rx)*.16; ry+=(my-ry)*.16;
+  gx+=(mx-gx)*.055; gy+=(my-gy)*.055;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  glow.style.left=gx+'px'; glow.style.top=gy+'px';
+  requestAnimationFrame(cursorLoop);
+}
+cursorLoop();
+document.querySelectorAll('a,.btn,.card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+});
+
+
+
+const contactForm=document.getElementById('contactForm');
+const formStatus=document.getElementById('formStatus');
+contactForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const data=new FormData(contactForm);
+  const subject=encodeURIComponent('Portfolio enquiry: '+data.get('project'));
+  const body=encodeURIComponent(
+    'Name: '+data.get('name')+'\n'+
+    'Email: '+data.get('email')+'\n'+
+    'Project: '+data.get('project')+'\n\n'+
+    data.get('message')
+  );
+  window.location.href='mailto:jahindyd@gmail.com?subject='+subject+'&body='+body;
+  formStatus.textContent='TRANSMISSION READY — OPENING MAIL CLIENT...';
+});
+
+const themeToggle=document.getElementById('themeToggle');
+const savedTheme=localStorage.getItem('jexy-theme');
+if(savedTheme==='light') document.body.classList.add('light');
+
+themeToggle.addEventListener('click',()=>{
+  document.body.classList.toggle('light');
+  localStorage.setItem('jexy-theme',document.body.classList.contains('light')?'light':'dark');
+});
+
+const header=document.getElementById('header');
+addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>40));
+
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+document.querySelectorAll('.card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    card.style.setProperty('--mx',x+'px');card.style.setProperty('--my',y+'px');
+    const px=(x/r.width-.5)*7,py=(y/r.height-.5)*-7;
+    card.style.transform=`perspective(900px) rotateX(${py}deg) rotateY(${px}deg) translateY(-10px)`;
+  });
+  card.addEventListener('mouseleave',()=>card.style.transform='');
+});
+
+const counters=document.querySelectorAll('[data-count]');
+const countObserver=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(!entry.isIntersecting)return;
+    const el=entry.target,target=+el.dataset.count;let n=0;
+    const tick=()=>{n+=Math.max(1,Math.ceil(target/35));if(n>=target){n=target}else requestAnimationFrame(tick);el.textContent=String(n).padStart(target<10?2:1,'0')};
+    tick();countObserver.unobserve(el);
+  });
+},{threshold:.6});
+counters.forEach(c=>countObserver.observe(c));
+</script>
+</body>
+</html>
